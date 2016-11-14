@@ -6,6 +6,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var nunjucks = require('nunjucks');
 var wikiRouter = require('./routes/wiki');
+var authorRouter = require('./routes/authors');
 var models = require('./models');
 
 //templating setup
@@ -22,7 +23,7 @@ app.use(bodyParser.json()); //handles HTML requests
 
 models.User.sync({})
 .then(function() {
-	return models.Page.sync({force: true});
+	return models.Page.sync({});
 })
 .then(function() {
 	//starts the server
@@ -44,7 +45,8 @@ app.get('/', function(req, res, next) {
 });
 
 //modular routing
-app.use('/wiki', wikiRouter)
+app.use('/wiki', wikiRouter);
+app.use('/users', authorRouter);
 
 
 

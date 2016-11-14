@@ -51,21 +51,15 @@ router.get('/:urlTitle', function(req, res, next) {
 		}
 	})
 	.then(function(foundPage) {
-		res.render('wikipage', {page: foundPage});
+		return User.findOne({
+			where: {
+				id: foundPage.authorId
+			}
+		}).then(function(foundUser) {
+			res.render('wikipage', {page: foundPage, user: foundUser});
+		})
 	})
 	.catch(next);
 });
-
-// router.get('/users', function(req, res, next) {
-// 	res.redirect('/');
-// });
-
-// router.get('/users/123', function(req, res, next) {
-// 	res.redirect('/');
-// });
-
-// router.post('/users', function(req, res, next) {
-// 	res.json(req.body);
-// });
 
 module.exports = router;

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>Author {{author.name}}</h3>
+  <hr>
+  <ul class="list-unstyled">
+    	<li>Email: {{author.email}}</li>
+    	<li>Pages authored:
+		  <ul class="list-unstyled">
+		    	{% for page in pages %}
+		    	<li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
+		  		{% endfor %}
+  				</ul>
+  		</li>
+  </ul>
+{% endblock %}
