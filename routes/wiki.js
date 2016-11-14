@@ -1,18 +1,39 @@
 'use strict';
 var express = require('express');
 var router = express.Router();
+var models = require('../models');
+var Page = models.Page;
+var User = models.User;
 
 router.get('/', function(req, res, next) {
-	res.status(200).send('This action retrieves all wiki pages.');
-	// res.render('index', {});
+	res.send('hi');
+
 });
 
 router.post('/', function(req, res, next) {
-	res.status(201).send('New page submitted');
+	var page = Page.build({
+		title: req.body.title,
+		content: req.body.content
+	});
+
+	page.save()
+	.then(res.json(page));
 });
 
 router.get('/add', function(req, res, next) {
-	res.status(200).send('Add a page');
+	res.render('addpage');
 });
 
-module.exports = router; 
+router.get('/users', function(req, res, next) {
+	res.redirect('/');
+});
+
+router.get('/users/123', function(req, res, next) {
+	res.redirect('/');
+});
+
+router.post('/users', function(req, res, next) {
+	res.json(req.body);
+});
+
+module.exports = router;
