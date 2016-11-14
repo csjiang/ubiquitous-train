@@ -7,7 +7,6 @@ var User = models.User;
 
 router.get('/', function(req, res, next) {
 	res.send('hi');
-
 });
 
 router.post('/', function(req, res, next) {
@@ -15,25 +14,26 @@ router.post('/', function(req, res, next) {
 		title: req.body.title,
 		content: req.body.content
 	});
-
 	page.save()
-	.then(res.json(page));
+	.then(function(result) {
+		res.json(result);
+	});
 });
 
 router.get('/add', function(req, res, next) {
 	res.render('addpage');
 });
 
-router.get('/users', function(req, res, next) {
-	res.redirect('/');
-});
+// router.get('/users', function(req, res, next) {
+// 	res.redirect('/');
+// });
 
-router.get('/users/123', function(req, res, next) {
-	res.redirect('/');
-});
+// router.get('/users/123', function(req, res, next) {
+// 	res.redirect('/');
+// });
 
-router.post('/users', function(req, res, next) {
-	res.json(req.body);
-});
+// router.post('/users', function(req, res, next) {
+// 	res.json(req.body);
+// });
 
 module.exports = router;
