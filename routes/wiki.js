@@ -6,7 +6,11 @@ var Page = models.Page;
 var User = models.User;
 
 router.get('/', function(req, res, next) {
-	res.send('hi');
+	Page.findAll({})
+	.then(function(foundPages) {
+		res.render('index', {pages: foundPages});
+	})
+	.catch(next)
 });
 
 router.get('/add', function(req, res, next) {
@@ -14,14 +18,30 @@ router.get('/add', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-	var page = Page.build({
-		title: req.body.title,
-		content: req.body.content
-	});
-	page.save()
-	.then(function(result) {
-		res.redirect(result.route);
-	});
+	var user = User.findOrCreate({
+		where: {
+			name: req.body.authorname,
+			email: req.body.authoremail
+		}
+	})
+	user
+		.spread(function(resultCreated, created) {
+			var user = resultCreated;
+
+			var page = Page.build({
+				title: req.body.title,
+				content: req.body.content
+			});
+
+			return page.save()
+			.then(function (page){
+				return page.setAuthor(user);
+			});
+		})
+		.then(function(page) {
+			res.redirect(page.route);
+		})
+		.catch(next);
 });
 
 router.get('/:urlTitle', function(req, res, next) {
@@ -31,7 +51,7 @@ router.get('/:urlTitle', function(req, res, next) {
 		}
 	})
 	.then(function(foundPage) {
-		res.render('wikipage', {page: foundPage});	
+		res.render('wikipage', {page: foundPage});
 	})
 	.catch(next);
 });

@@ -5,7 +5,7 @@ const Page = db.define('page', {
 	title: {
 		type: Sequelize.STRING,
 		allowNull: false
-	}, 
+	},
 	urlTitle:  {
 		type: Sequelize.STRING,
 		allowNull: false
@@ -26,7 +26,7 @@ const Page = db.define('page', {
 			route: function() {
 				return '/wiki/' + this.urlTitle;
 			}
-		}, 
+		},
 		hooks: {
 			beforeValidate: function(page, options) {
 				if (page.title) {
@@ -50,6 +50,7 @@ const User = db.define('user', {
     }
 });
 
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
   Page: Page,

@@ -22,7 +22,7 @@ app.use(bodyParser.json()); //handles HTML requests
 
 models.User.sync({})
 .then(function() {
-	return models.Page.sync({});
+	return models.Page.sync({force: true});
 })
 .then(function() {
 	//starts the server
@@ -34,6 +34,14 @@ models.User.sync({})
 
 //static middleware
 app.use(express.static('/public'));
+
+app.get('/', function(req, res, next) {
+	models.Page.findAll({})
+	.then(function(foundPages) {
+		res.render('index', {pages: foundPages});
+	})
+	.catch(next)
+});
 
 //modular routing
 app.use('/wiki', wikiRouter)
