@@ -20,7 +20,10 @@ const Page = db.define('page', {
 	date: {
 		type: Sequelize.DATE,
 		defaultValue: Sequelize.NOW
-		}
+	},
+	tags: {
+		type: Sequelize.ARRAY(Sequelize.TEXT)
+	}
 	}, {
 		getterMethods: {
 			route: function() {
@@ -34,6 +37,18 @@ const Page = db.define('page', {
 				} else {
 					page.urlTitle = Math.random().toString(36).substring(2, 7);
 				}
+			}
+		},
+		classMethods: {
+			findByTag: function(tags) {
+				//console.log(tags)
+				return this.findAll({
+					where: {
+						tags: {
+							$overlap: tags
+						}
+					}
+				})
 			}
 		}
 	});

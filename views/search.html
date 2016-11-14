@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>Tag Search</h3>
+  <hr>
+  <form method="GET" action="/wiki/search">
+
+    <div class="form-group">
+      <label for="tagsearch" class="col-sm-2 control-label">Search Tags</label>
+      <div class="col-sm-10">
+        <input name="tagsearch" type="text" class="form-control"/>
+      </div>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+
+    <ul class="list-unstyled">
+      {% for page in pages %}
+      <li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
+      {% endfor %}
+    </ul>
+
+{% endblock %}

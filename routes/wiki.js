@@ -30,7 +30,8 @@ router.post('/', function(req, res, next) {
 
 			var page = Page.build({
 				title: req.body.title,
-				content: req.body.content
+				content: req.body.content,
+				tags: req.body.tags.split(' ')
 			});
 
 			return page.save()
@@ -42,6 +43,17 @@ router.post('/', function(req, res, next) {
 			res.redirect(page.route);
 		})
 		.catch(next);
+});
+
+router.get('/search', function(req, res, next) {
+	if (Object.keys(req.query).length > 0) {
+		return Page.findByTag(req.query.tagsearch.split())
+		.then(function(pageMatch) {
+			res.render('search', {pages: pageMatch})
+		})
+	} else {
+		res.render('search')
+	}
 });
 
 router.get('/:urlTitle', function(req, res, next) {
@@ -56,10 +68,12 @@ router.get('/:urlTitle', function(req, res, next) {
 				id: foundPage.authorId
 			}
 		}).then(function(foundUser) {
-			res.render('wikipage', {page: foundPage, user: foundUser});
+			res.render('wikipage', {page: foundPage, user: foundUser, tags: foundPage.tags});
 		})
 	})
 	.catch(next);
 });
+
+
 
 module.exports = router;
