@@ -31,7 +31,7 @@ router.get('/:urlTitle', function(req, res, next) {
 		}
 	})
 	.then(function(foundPage) {
-		res.json(foundPage);	
+		res.render('wikipage', {page: foundPage});	
 	})
 	.catch(next);
 });

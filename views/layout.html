@@ -5,9 +5,7 @@
     <title>{% block title %}WikiStack{% endblock %}</title>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="/stylesheets/style.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="navbar navbar-static-top navbar-inverse" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-items">
@@ -29,6 +27,8 @@
         </div>
       </div>
     </div>
+  </head>
+  <body>
     <div class="container content">
       {% block content %}{% endblock %}
     </div>
