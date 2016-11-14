@@ -50,6 +50,20 @@ const Page = db.define('page', {
 					}
 				})
 			}
+		}, 
+		instanceMethods: {
+			findSimilar: function() {
+				return Page.findAll({
+					where: {
+						tags: {
+							$overlap: this.tags
+						},
+						id: {
+							$ne: this.id
+						}
+					}
+				})
+			}
 		}
 	});
 

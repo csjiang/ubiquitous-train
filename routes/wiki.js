@@ -56,6 +56,18 @@ router.get('/search', function(req, res, next) {
 	}
 });
 
+router.get('/:urlTitle/similar', function(req, res, next) {
+	Page.findOne({
+		where: {
+			urlTitle: req.params.urlTitle
+		}
+	}).then(function(thisPage) {
+		return thisPage.findSimilar()
+	}).then(function(similarPages) {
+		res.render('index', {pages: similarPages});
+	})
+});
+
 router.get('/:urlTitle', function(req, res, next) {
 	Page.findOne({
 		where: {
