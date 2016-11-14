@@ -9,6 +9,10 @@ router.get('/', function(req, res, next) {
 	res.send('hi');
 });
 
+router.get('/add', function(req, res, next) {
+	res.render('addpage');
+});
+
 router.post('/', function(req, res, next) {
 	var page = Page.build({
 		title: req.body.title,
@@ -16,12 +20,20 @@ router.post('/', function(req, res, next) {
 	});
 	page.save()
 	.then(function(result) {
-		res.json(result);
+		res.redirect(result.route);
 	});
 });
 
-router.get('/add', function(req, res, next) {
-	res.render('addpage');
+router.get('/:urlTitle', function(req, res, next) {
+	Page.findOne({
+		where: {
+			urlTitle: req.params.urlTitle
+		}
+	})
+	.then(function(foundPage) {
+		res.json(foundPage);	
+	})
+	.catch(next);
 });
 
 // router.get('/users', function(req, res, next) {
