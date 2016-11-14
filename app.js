@@ -5,7 +5,8 @@ var app = express();
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var nunjucks = require('nunjucks');
-var router = require('./routes')
+var wikiRouter = require('./routes/wiki');
+var models = require('./models');
 
 //templating setup
 var env = nunjucks.configure('views', {noCache: true});
@@ -19,18 +20,23 @@ app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({extended: true})); //handles HTML form submissions
 app.use(bodyParser.json()); //handles HTML requests
 
-//starts the server
-app.listen(3000, function() {
-	console.log('Server listening on port 3000');
-});
-
-
+models.User.sync({})
+.then(function() {
+	return models.Page.sync({});
+})
+.then(function() {
+	//starts the server
+	app.listen(1337, function() {
+		console.log('Server listening on port 1337');
+	});
+})
+.catch(console.error);
 
 //static middleware
 app.use(express.static('/public'));
 
 //modular routing
-app.use('/', router)
+app.use('/wiki', wikiRouter)
 
 
 
