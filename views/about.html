@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>About Wikistack</h3>
+  <hr>
+  <h4>Wikistack is a simple Wikipedia clone implemented with <a href="https://nodejs.org/">Node.js</a>, <a href="https://expressjs.com">Express</a>, <a href="https://sequelizejs.com">Sequelize</a>, and <a href="https://postgresql.org">PostgreSQL</a>.</h4>
+  <h4>The following fabulous features have been implemented:</h4>
+  <ul>
+  	<li>A <a href="/">homepage</a> that lists all the pages in the Wiki</li>
+  	<li>The ability to <a href="/wiki/add">create new pages</a>, and write them in <a href="http://en.wikipedia.org/wiki/Markdown">Markdown.</a></li>
+  	<li>Page search by tag (via the navbar search bar)</li>
+  	<li>Tagging</li>
+    <li>An <a href="/users">authors</a> page listing all the users, and individual user pages listing all the articles authored by each user.</li>
+    <li>The ability to delete pages.</li>
+  </ul>
+  <h4>The following features have yet to be implemented:</h4>
+  <ul> 
+  	<li>Open page editing</li>
+  	<li>Page search by content</li>
+  	<li>Version history</li>
+  	<li>Discussion tab for each page</li>
+  </ul>
+  <h5>Thanks for stopping by. Check back soon for additional updates and functionality!</h5>
+
+{% endblock %}

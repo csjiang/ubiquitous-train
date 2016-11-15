@@ -9,7 +9,9 @@ var User = models.User;
 router.get('/', function(req, res, next) {
 	User.findAll({})
 	.then(function(foundUsers) {
-		res.render('authors', {authors: foundUsers});
+		res.render('authors', {
+			authors: foundUsers
+		});
 	})
 	.catch(next)
 });
@@ -21,14 +23,25 @@ router.get('/:id', function(req, res, next) {
 			where: {
 				authorId: foundUser.id
 			}
-		}).then(function(foundArticles) {
+		})
+		.then(function(foundArticles) {
 			res.render('one_author', {
 			pages: foundArticles, 
 			author: foundUser
 			});
+		})
 	})
-}).catch(next)
+	.catch(next)
 });
 
+router.use('/', function(err, req, res, next) {
+	if(err) {
+		var err = new Error('Error occurred; please try again.');
+		res.render('error', {
+			error: err, 
+			message: err.message
+		});
+	}
+});
 
 module.exports = router;

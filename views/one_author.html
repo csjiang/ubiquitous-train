@@ -1,17 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>Author {{author.name}}</h3>
+  <h3>You've reached the author page for user <b>{{author.name}}</b>.</h3>
   <hr>
   <ul class="list-unstyled">
-    	<li>Email: {{author.email}}</li>
-    	<li>Pages authored:
-		  <ul class="list-unstyled">
-		    	{% for page in pages %}
-		    	<li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
-		  		{% endfor %}
-  				</ul>
-  		</li>
+    	<li><h4>Email: <a href="mailto:{{author.email}}">{{author.email}}</a></h4></li>
+
+    	{% if pages.length > 1 %}
+	    	<li><h4><b>{{author.name}}</b> has written {{pages.length}} articles on Wikistack. Here they are: 
+
+  		{% elif pages.length == 1 %}
+  			<li><h4><b>{{author.name}}</b> has written {{pages.length}} article on Wikistack. Here it is: 
+  		{% else %}
+  			<li><h4>Oh, no!<b>{{author.name}}</b> hasn't written any articles on Wikistack. We're terribly sorry. 
+  		{% endif %}
+  		<ul class="list-unstyled">
+	    	{% for page in pages %}
+	    	<li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
+	  		{% endfor %}
+			</ul>
+  		</h4></li>
   </ul>
 {% endblock %}
 

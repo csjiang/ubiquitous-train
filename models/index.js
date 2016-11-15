@@ -1,5 +1,18 @@
 const Sequelize = require('sequelize');
+const marked = require('marked');
 const db = new Sequelize('postgres://localhost:5432/wikistack');
+
+//setting options with default values
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+});
 
 const Page = db.define('page', {
 	title: {
@@ -28,6 +41,13 @@ const Page = db.define('page', {
 		getterMethods: {
 			route: function() {
 				return '/wiki/' + this.urlTitle;
+			}, 
+			renderedContent: function() {
+				const linkText = this.content.match(/\[{2}.+?\]{2}/g);
+				return marked(this.content.replace(/(\[{2})|(\]{2})/g, function(match, p1, p2) {
+						if (p1) {return '<a href="/wiki/' + linkText + '">'}
+						if (p2) {return '</a>'}
+					}));
 			}
 		},
 		hooks: {

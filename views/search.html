@@ -1,27 +1,33 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>Tag Search</h3>
+  {% if pages.length > 0 %}
+  <h3>It took a while, but we found some results for your search query:</h3>
   <hr>
-  <form method="GET" action="/wiki/search">
-
-    <div class="form-group">
-      <label for="tagsearch" class="col-sm-2 control-label">Search Tags</label>
-      <div class="col-sm-10">
-        <input name="tagsearch" type="text" class="form-control"/>
-      </div>
-    </div>
-
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-
-  </form>
-
     <ul class="list-unstyled">
       {% for page in pages %}
-      <li><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></li>
+      <li><h4><a href="/wiki/{{page.urlTitle}}">{{page.title}}</a></h4></li>
       {% endfor %}
     </ul>
+  {% endif %}
+  
+  {% if pages.length === 0 %}
+  <h3>Alas! We couldn't find any pages matching your query terms.</h3>
+  <h4>Maybe you'd like to <a href="/wiki/add">create</a> the page you're looking for.</h4>
+  {% endif %}
+
+  <form method="GET" action="/wiki/search">
+    <div class="form-group">
+      <label for="tagsearch" class="col-sm-9 control-label">Try again? Second time's the charm:</label>
+      <div class="row">
+        <div class="col-sm-10">
+          <input name="tagsearch" type="text" placeholder="Enter search terms separated by spaces, or be sorry you didn't." class="form-control"/>
+        </div>
+        <div class="col-sm-2">
+          <button type="submit" class="btn btn-primary">Here goes nothing...</button>
+        </div>
+      </div>
+    </div>
+  </form>
 
 {% endblock %}
