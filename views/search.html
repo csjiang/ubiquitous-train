@@ -2,7 +2,7 @@
 
 {% block content %}
   {% if pages.length > 0 %}
-  <h3>It took a while, but we found some results for your search query:</h3>
+  <h3>We found some results for your search query:</h3>
   <hr>
     <ul class="list-unstyled">
       {% for page in pages %}
@@ -21,7 +21,7 @@
       <label for="tagsearch" class="col-sm-9 control-label">Try again? Second time's the charm:</label>
       <div class="row">
         <div class="col-sm-10">
-          <input name="tagsearch" type="text" placeholder="Enter search terms separated by spaces, or be sorry you didn't." class="form-control"/>
+          <input name="tagsearch" type="text" placeholder="Enter search terms separated by spaces, please." class="form-control"/>
         </div>
         <div class="col-sm-2">
           <button type="submit" class="btn btn-primary">Here goes nothing...</button>

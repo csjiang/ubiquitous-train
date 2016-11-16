@@ -81,6 +81,44 @@ router.get('/:urlTitle/similar', function(req, res, next) {
 	})
 });
 
+//editing functionality
+
+router.get('/:urlTitle/edit', function(req, res, next) {
+	Page.findOne({
+		where: {
+			urlTitle: req.params.urlTitle
+		}
+	}).then(function(thisPage) {
+		if (thisPage === null) {
+			var error = new Error('Page not found');
+			error.status = 404;
+			return next(error);
+		}
+
+		res.render('editpage', {
+			page: thisPage
+		});
+	}).catch(next);
+});
+
+router.post('/:urlTitle/edit', function(req, res, next) {
+	Page.findOne({
+		where: {
+			urlTitle: req.params.urlTitle
+		}
+	}).then(function (pageToEdit) {
+		for(var key in req.body) {
+			pageToEdit[key] = req.body[key];
+		}
+
+		return pageToEdit.save();
+	}).then(function(updatedPage) {
+		res.redirect(updatedPage.route);
+	})
+	.catch(next);
+});
+
+//delete
 router.get('/:urlTitle/delete', function(req, res, next) {
 	Page.findOne({
 		where: {
@@ -89,7 +127,7 @@ router.get('/:urlTitle/delete', function(req, res, next) {
 	}).then(function(thisPage) {
 		return thisPage.destroy();
 	}).then(function() {
-		res.redirect('/?deleted=true');
+		res.redirect('/?deleted=yes');
 		});
 	});
 
@@ -116,13 +154,10 @@ router.get('/:urlTitle', function(req, res, next) {
 });
 
 router.use('/', function(err, req, res, next) {
-	if(err) {
-		var err = new Error('Error occurred; please try again.');
-		res.render('error', {
-			error: err, 
-			message: err.message
-		});
-	}
+	res.render('error', {
+		error: err, 
+		message: err.message
+	});
 });
 
 module.exports = router;

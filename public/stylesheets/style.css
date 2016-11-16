@@ -7,6 +7,9 @@ a {
   color: #00B7FF;
 }
 
-.navbar {
+/*.navbar {
 	padding-bottom: 100px;
+}*/
+img {
+	border-radius:50%; height:100px; display:inline; margin-left: 50px
 }

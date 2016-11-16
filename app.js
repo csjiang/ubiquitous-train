@@ -8,6 +8,7 @@ const nunjucks = require('nunjucks');
 const wikiRouter = require('./routes/wiki');
 const authorRouter = require('./routes/authors');
 const models = require('./models');
+const path = require('path');
 
 //templating setup
 const env = nunjucks.configure('views', {noCache: true});
@@ -36,15 +37,22 @@ models.User.sync({})
 .catch(console.error);
 
 //static middleware
-app.use(express.static('/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 
 //homepage
 app.get('/', function(req, res, next) {
 	models.Page.findAll({})
 	.then(function(foundPages) {
-		res.render('index', {
-			pages: foundPages
-		});
+		if (req.query.deleted == 'yes') {
+			res.render('index', {
+				pages: foundPages,
+				deleteSuccess: true
+			});
+		} else {
+			res.render('index', {
+				pages: foundPages
+			});
+		}
 	})
 	.catch(next)
 });
@@ -60,12 +68,10 @@ app.use('/users', authorRouter);
 
 //this error handler is currently never reached
 app.use('/', function(err, req, res, next) {
-	if(err) {
-		var err = new Error('Error occurred; please try again.');
-		res.render('error', {
-			error: err, 
-			message: err.message
-		});
-	}
+	var err = new Error('Error occurred; please try again.');
+	res.render('error', {
+		error: err, 
+		message: err.message
+	});
 });
 
